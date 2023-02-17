@@ -45,6 +45,17 @@ module cluster './core/host/aks/main.bicep' = {
     warIngressNginx: true
     adminPrincipalId: principalId
     acrPushRolePrincipalId: principalId
+    registries_sku: 'Standard'
+  }
+}
+
+// Give the AKS Cluster access to KeyVault
+module clusterKeyVaultAccess './core/security/keyvault-access.bicep' = {
+  name: 'cluster-keyvault-access'
+  scope: rg
+  params: {
+    keyVaultName: keyVault.outputs.name
+    principalId: cluster.outputs.aksClusterIdentity.objectId
   }
 }
 
@@ -96,6 +107,10 @@ output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
+output AZURE_AKS_CLUSTER_NAME string = cluster.outputs.aksClusterName
+output AZURE_AKS_IDENTITY_CLIENT_ID string = cluster.outputs.aksClusterIdentity.clientId
+output AZURE_CONTAINER_REGISTRY_ENDPOINT string = '${cluster.outputs.containerRegistryName}.azurecr.io'
+output AZURE_CONTAINER_REGISTRY_NAME string = cluster.outputs.containerRegistryName
 output REACT_APP_API_BASE_URL string = ''
 output REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
 output REACT_APP_WEB_BASE_URL string = ''
