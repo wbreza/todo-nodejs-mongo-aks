@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/wbreza/azure-dev/kustomize/schemas/alpha/azure.yaml.json
 
 name: todo-nodejs-mongo-aks
 metadata:
@@ -9,6 +9,13 @@ services:
     dist: build
     language: js
     host: aks
+    k8s:
+      kustomize:
+        dir: ./kustomize
+        edits:
+          - set image todo-web=${SERVICE_WEB_IMAGE_NAME}
+        env:
+          REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING: ${REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING}
     hooks:
       postdeploy:
         shell: sh
@@ -20,6 +27,14 @@ services:
     k8s:
       ingress:
         relativePath: api
+      kustomize:
+        dir: ./kustomize
+        edits:
+          - set image todo-api=${SERVICE_API_IMAGE_NAME}
+        env:
+          AZURE_AKS_IDENTITY_CLIENT_ID: ${AZURE_AKS_IDENTITY_CLIENT_ID}
+          AZURE_KEY_VAULT_ENDPOINT: ${AZURE_KEY_VAULT_ENDPOINT}
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
     hooks:
       postdeploy:
         shell: sh

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: todo-web
-          image: {{.Env.SERVICE_WEB_IMAGE_NAME}}
+          image: todo-web
           ports:
             - containerPort: 3000
           env:

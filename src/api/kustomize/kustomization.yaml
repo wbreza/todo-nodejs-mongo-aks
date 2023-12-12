@@ -1,0 +1,15 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+configMapGenerator:
+- envs:
+  - .env
+  name: todo-api-config
+images:
+- name: todo-api
+  newName: crgpyazjrceb74a.azurecr.io/todo-nodejs-mongo-aks/api-wabrez-aks-kustomize
+  newTag: azd-deploy-1702418609

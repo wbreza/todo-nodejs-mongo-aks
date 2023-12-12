@@ -14,12 +14,16 @@ spec:
     spec:
       containers:
         - name: todo-api
-          image: {{.Env.SERVICE_API_IMAGE_NAME}}
+          image: todo-api
           ports:
             - containerPort: 3100
           env:
             - name: AZURE_CLIENT_ID
-              value: {{.Env.AZURE_AKS_IDENTITY_CLIENT_ID}}
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-api-config
+                  key: AZURE_AKS_IDENTITY_CLIENT_ID
+                  optional: false
             - name: AZURE_KEY_VAULT_ENDPOINT
               valueFrom:
                 configMapKeyRef:
