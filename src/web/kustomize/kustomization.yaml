@@ -12,4 +12,4 @@ configMapGenerator:
 images:
 - name: todo-web
   newName: crgpyazjrceb74a.azurecr.io/todo-nodejs-mongo-aks/web-wabrez-aks-kustomize
-  newTag: azd-deploy-1702419052
+  newTag: azd-deploy-1705102131
