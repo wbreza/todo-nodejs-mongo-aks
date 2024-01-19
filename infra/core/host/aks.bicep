@@ -71,6 +71,9 @@ param systemPoolConfig object = {}
 @description('Custom configuration of user node pool')
 param agentPoolConfig object = {}
 
+@description('Id of the user or app to assign application roles')
+param principalId string = ''
+
 // Configure AKS add-ons
 var omsAgentConfig = (!empty(logAnalyticsName) && !empty(addOns.omsAgent) && addOns.omsAgent.enabled) ? union(
   addOns.omsAgent,
@@ -110,6 +113,11 @@ module managedCluster 'aks-managed-cluster.bicep' = {
     )
     addOns: addOnsConfig
     workspaceId: !empty(logAnalyticsName) ? logAnalytics.id : ''
+    aadTenantId: tenant().tenantId
+    enableRbac: true
+    enableAzureRbac: true
+    disableLocalAccounts: true
+    enableAad: true
   }
 }
 
@@ -152,6 +160,14 @@ module clusterKeyVaultAccess '../security/keyvault-access.bicep' = {
   params: {
     keyVaultName: keyVaultName
     principalId: managedCluster.outputs.clusterIdentity.objectId
+  }
+}
+
+module clusterAccess '../security/aks-managed-cluster-access.bicep' = {
+  name: 'cluster-access'
+  params: {
+    clusterName: managedCluster.outputs.clusterName
+    principalId: principalId
   }
 }
 
