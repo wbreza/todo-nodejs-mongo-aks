@@ -14,9 +14,6 @@ services:
       api:
         project: ./src/api
         language: js
-        k8s:
-          ingress:
-            relativePath: api
     k8s:
       helm:
         releases:
