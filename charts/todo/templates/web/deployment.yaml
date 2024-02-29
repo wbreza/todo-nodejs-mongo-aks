@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: todo-web
-          image: {{.Env.SERVICE_WEB_IMAGE_NAME}}
+          image: {{.Values.web.image}}
           ports:
-            - containerPort: 3000
+            - containerPort: {{.Values.web.port}}
           env:
             - name: REACT_APP_API_BASE_URL
               value: /api

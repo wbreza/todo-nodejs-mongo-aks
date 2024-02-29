@@ -1,0 +1,4 @@
+api:
+  port: 3100
+web:
+  port: 3000

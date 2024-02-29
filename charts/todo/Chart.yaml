@@ -1,0 +1,4 @@
+apiVersion: v2
+version: 0.0.1
+name: todo
+description: A simple todo app with an API backend and a SPA frontend

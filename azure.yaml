@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/alpha/azure.yaml.json
+# yaml-language-server: $schema=azure.yaml.json
 
 name: todo-nodejs-mongo-aks
 metadata:
@@ -23,6 +23,13 @@ services:
           - name: todo
             chart: ./charts/todo
             values: ./charts/todo/values.yaml
+            namespace: todo-helm
+            overrides:
+              cluster.clientId: ${AZURE_AKS_IDENTITY_CLIENT_ID}
+              keyvault.endpoint: ${AZURE_KEY_VAULT_ENDPOINT}
+              appInsights.connectionString: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
+              api.image: ${SERVICE_API_IMAGE_NAME}
+              web.image: ${SERVICE_WEB_IMAGE_NAME}
     hooks:
       postdeploy:
         shell: sh
