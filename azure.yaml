@@ -39,31 +39,3 @@ services:
       postdeploy:
         shell: sh
         run: azd env set REACT_APP_API_BASE_URL ${SERVICE_API_ENDPOINT_URL}
-  argocd:
-    host: aks
-    k8s:
-      namespace: argo
-      service:
-        name: argocd-server
-      helm:
-        repositories:
-          - name: argo
-            url: https://argoproj.github.io/argo-helm
-        releases:
-          - name: argocd
-            chart: argo/argo-cd
-            version: 5.51.4
-  jupyterhub:
-      host: aks
-      k8s:
-        namespace: jupyterhub
-        service:
-          name: proxy-public
-        helm:
-          repositories:
-            - name: jupyterhub
-              url: https://hub.jupyter.org/helm-chart/
-          releases:
-            - name: jupyterhub
-              chart: jupyterhub/jupyterhub
-              version: 3.1.0
