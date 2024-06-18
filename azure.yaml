@@ -12,23 +12,21 @@ pipeline:
   variables:
     - AZURE_PRINCIPAL_TYPE
 services:
-  web:
-    project: ./src/web
-    dist: dist
-    language: js
+  todo:
     host: aks
-  api:
-    project: ./src/api
-    language: js
-    host: aks
-    k8s:
-      ingress:
-        relativePath: api
-    hooks:
-      postdeploy:
-        windows:
-          shell: pwsh
-          run: azd env set REACT_APP_API_BASE_URL $env:SERVICE_API_ENDPOINT_URL
-        posix:
-          shell: sh
-          run: azd env set REACT_APP_API_BASE_URL ${SERVICE_API_ENDPOINT_URL}
+    containers:
+      web:
+        project: ./src/web
+        dist: dist
+        language: js
+      api:
+        project: ./src/api
+        language: js
+hooks:
+  postdeploy:
+    windows:
+      shell: pwsh
+      run: azd env set REACT_APP_API_BASE_URL $env:SERVICE_TODO_ENDPOINT_URL
+    posix:
+      shell: sh
+      run: azd env set REACT_APP_API_BASE_URL ${SERVICE_TODO_ENDPOINT_URL}

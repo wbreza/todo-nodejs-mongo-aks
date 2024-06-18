@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: todo-api
-          image: {{.Env.SERVICE_API_IMAGE_NAME}}
+          image: {{.Env.SERVICE_TODO_API_IMAGE_NAME}}
           ports:
             - containerPort: 3100
           env:
