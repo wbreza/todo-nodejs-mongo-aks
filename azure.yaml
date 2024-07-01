@@ -12,8 +12,26 @@ pipeline:
   variables:
     - AZURE_PRINCIPAL_TYPE
 services:
+  # todo:
+  #   host: aks
+  #   containers:
+  #     web:
+  #       project: ./src/web
+  #       dist: dist
+  #       language: js
+  #     api:
+  #       project: ./src/api
+  #       language: js
   todo:
     host: aks
+    k8s:
+      kustomize:
+        dir: ./kustomize
+        edits:
+          - set image todo-api=${SERVICE_TODO_API_IMAGE_NAME}
+          - set image todo-web=${SERVICE_TODO_WEB_IMAGE_NAME}
+        env:
+          REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING: ${REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING}
     containers:
       web:
         project: ./src/web
