@@ -52,14 +52,14 @@ module aks './core/host/aks.bicep' = {
   params: {
     location: location
     name: !empty(clusterName) ? clusterName : '${abbrs.containerServiceManagedClusters}${resourceToken}'
-    containerRegistryName: !empty(containerRegistryName) ? containerRegistryName : '${abbrs.containerRegistryRegistries}${resourceToken}'
+    containerRegistryName: !empty(containerRegistryName)
+      ? containerRegistryName
+      : '${abbrs.containerRegistryRegistries}${resourceToken}'
     logAnalyticsName: monitoring.outputs.logAnalyticsWorkspaceName
     keyVaultName: keyVault.outputs.name
     principalId: principalId
     principalType: principalType
-    // Set enableAzureRbac & disableLocalAccounts to use Azure AD for authentication and authorization
-    enableAzureRbac: false
-    disableLocalAccounts: false
+    automatic: true
   }
 }
 
@@ -95,9 +95,15 @@ module monitoring './core/monitor/monitoring.bicep' = {
   params: {
     location: location
     tags: tags
-    logAnalyticsName: !empty(logAnalyticsName) ? logAnalyticsName : '${abbrs.operationalInsightsWorkspaces}${resourceToken}'
-    applicationInsightsName: !empty(applicationInsightsName) ? applicationInsightsName : '${abbrs.insightsComponents}${resourceToken}'
-    applicationInsightsDashboardName: !empty(applicationInsightsDashboardName) ? applicationInsightsDashboardName : '${abbrs.portalDashboards}${resourceToken}'
+    logAnalyticsName: !empty(logAnalyticsName)
+      ? logAnalyticsName
+      : '${abbrs.operationalInsightsWorkspaces}${resourceToken}'
+    applicationInsightsName: !empty(applicationInsightsName)
+      ? applicationInsightsName
+      : '${abbrs.insightsComponents}${resourceToken}'
+    applicationInsightsDashboardName: !empty(applicationInsightsDashboardName)
+      ? applicationInsightsDashboardName
+      : '${abbrs.portalDashboards}${resourceToken}'
   }
 }
 
